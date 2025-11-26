@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ibiapaba Solar - Energia Solar Compartilhada</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Reset e configurações gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00a859;
+            --primary-dark: #008548;
+            --secondary: #ff6b00;
+            --dark: #1a1a1a;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --white: #ffffff;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: var(--white);
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(0, 168, 89, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 168, 89, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), #e55a00);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .header-scrolled {
+            padding: 10px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            transition: var(--transition);
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+            transition: var(--transition);
+        }
+
+        .header-scrolled .logo img {
+            height: 40px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+            font-size: 15px;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--white);
+            padding: 180px 0 100px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            font-weight: 300;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        /* Benefícios */
+        .benefits {
+            background-color: var(--light);
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .benefit-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .benefit-icon {
+            font-size: 50px;
+            color: var(--primary);
+            margin-bottom: 25px;
+        }
+
+        .benefit-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Calculadora */
+        .calculator-container {
+            background-color: var(--white);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 40px;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .calculator-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 15px 15px 0 0;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: var(--transition);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 168, 89, 0.1);
+        }
+
+        .calculate-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            border: none;
+            padding: 18px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 168, 89, 0.4);
+        }
+
+        .results {
+            margin-top: 30px;
+            padding: 25px;
+            background-color: var(--light);
+            border-radius: 10px;
+            display: none;
+            border-left: 5px solid var(--primary);
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: 500;
+        }
+
+        .result-value {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .economy-highlight {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .economy-highlight:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 168, 89, 0.4);
+        }
+
+        .whatsapp-btn {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: var(--white);
+            padding: 18px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 16px;
+        }
+
+        .whatsapp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        /* Como funciona */
+        .how-it-works {
+            background-color: var(--white);
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 40px 20px;
+            background-color: var(--light);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .step:hover {
+            transform: translateY(-10px);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            border-radius: 50%;
+            line-height: 60px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .step h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Depoimentos */
+        .testimonials {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--white);
+            text-align: center;
+        }
+
+        .testimonials .section-title h2 {
+            color: var(--white);
+        }
+
+        .testimonials .section-title p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .testimonial {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        /* FAQ */
+        .faq {
+            background-color: var(--light);
+        }
+
+        .faq-item {
+            margin-bottom: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            background-color: var(--white);
+        }
+
+        .faq-question {
+            background-color: var(--white);
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .faq-question:hover {
+            background-color: #f5f5f5;
+        }
+
+        .faq-answer {
+            background-color: var(--white);
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .faq-answer.active {
+            padding: 20px;
+            max-height: 500px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            padding: 80px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            bottom: -8px;
+            left: 0;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column ul li a {
+            color: #bbb;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .footer-column p {
+            color: #bbb;
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .contact-info li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .contact-info li i {
+            color: var(--primary);
+            width: 20px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .steps {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu {
+                display: block;
+            }
+            
+            nav {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 80px);
+                background-color: var(--white);
+                transition: var(--transition);
+                box-shadow: var(--shadow);
+                padding: 30px;
+            }
+            
+            nav.active {
+                left: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav ul li {
+                margin: 15px 0;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .calculator-container {
+                padding: 25px;
+            }
+            
+            .hero {
+                padding: 150px 0 80px;
+            }
+            
+            .section-padding {
+                padding: 60px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-container">
+            <div class="logo">
+                <img src="logo.png" alt="Ibiapaba Solar" onerror="this.style.display='none'">
+            </div>
+            
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <nav>
+                <ul>
+                    <li><a href="#home">Início</a></li>
+                    <li><a href="#benefits">Vantagens</a></li>
+                    <li><a href="#calculator">Calculadora</a></li>
+                    <li><a href="#how-it-works">Como Funciona</a></li>
+                    <li><a href="#testimonials">Depoimentos</a></li>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact" class="btn btn-primary">Fale Conosco</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Energia Solar Compartilhada</h1>
+            <p>Economize até 20% na sua conta de luz sem investir em equipamentos. Participe da nossa associação e tenha acesso a energia limpa e econômica.</p>
+            <div class="hero-buttons">
+                <a href="#calculator" class="btn btn-secondary">Calcular Economia</a>
+                <a href="#how-it-works" class="btn btn-primary">Saiba Mais</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefícios -->
+    <section class="benefits section-padding" id="benefits">
+        <div class="container">
+            <div class="section-title">
+                <h2>Vantagens da Energia Compartilhada</h2>
+                <p>Descubra por que milhares de pessoas já aderiram ao modelo de energia solar compartilhada</p>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3>Economia Imediata</h3>
+                    <p>Redução de até 20% na sua conta de energia desde o primeiro mês, sem custos de instalação.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Energia Limpa</h3>
+                    <p>Contribua para um planeta mais sustentável utilizando energia 100% renovável.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Sem Riscos</h3>
+                    <p>Sem investimento inicial, sem manutenção e com garantia de performance dos equipamentos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculadora -->
+    <section class="calculator section-padding" id="calculator">
+        <div class="container">
+            <div class="section-title">
+                <h2>Calcule Sua Economia</h2>
+                <p>Descubra quanto você pode economizar na sua conta de luz com energia solar compartilhada</p>
+            </div>
+            
+            <div class="calculator-container">
+                <div class="input-group">
+                    <label for="billAmount">Valor médio da sua fatura (R$):</label>
+                    <input type="number" id="billAmount" placeholder="Ex: 350,00" min="100" step="0.01">
+                </div>
+                
+                <div class="input-group">
+                    <label for="connectionType">Tipo de ligação:</label>
+                    <select id="connectionType">
+                        <option value="monofasica">Monofásica</option>
+                        <option value="bifasica">Bifásica</option>
+                        <option value="trifasica" selected>Trifásica</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="profile">Seu perfil:</label>
+                    <select id="profile">
+                        <option value="residencial">Residencial</option>
+                        <option value="comercial" selected>Comercial</option>
+                        <option value="industrial">Industrial</option>
+                    </select>
+                </div>
+                
+                <button class="calculate-btn" onclick="calculateEconomy()">
+                    CALCULAR MINHA ECONOMIA
+                </button>
+                
+                <div class="results" id="results">
+                    <div class="result-item">
+                        <span class="result-label">Sua conta atual:</span>
+                        <span class="result-value" id="currentBill">R$ 0,00</span>
+                    </div>
+                    
+                    <div class="result-item">
+                        <span class="result-label">Nova conta ENEL:</span>
+                        <span class="result-value" id="newEnelBill">R$ 0,00</span>
+                    </div>
+                    
+                    <div class="result-item">
+                        <span class="result-label">Contribuição associação:</span>
+                        <span class="result-value" id="associationFee">R$ 0,00</span>
+                    </div>
+                    
+                    <div class="result-item">
+                        <span class="result-label">Total a pagar:</span>
+                        <span class="result-value" id="newTotal">R$ 0,00</span>
+                    </div>
+                    
+                    <div class="result-item">
+                        <span class="result-label">Economia mensal:</span>
+                        <span class="result-value" id="monthlySavings">R$ 0,00</span>
+                    </div>
+                    
+                    <div class="result-item">
+                        <span class="result-label">Economia anual:</span>
+                        <span class="result-value" id="yearlySavings">R$ 0,00</span>
+                    </div>
+                    
+                    <div class="result-item">
+                        <span class="result-label">Redução de custos:</span>
+                        <span class="result-value" id="reductionPercent">0%</span>
+                    </div>
+                    
+                    <div class="economy-highlight" id="economyMessage" onclick="openWhatsApp()">
+                        💰 QUERO ECONOMIZAR AGORA!
+                    </div>
+                    
+                    <div class="whatsapp-btn" onclick="openWhatsApp()">
+                        <i class="fab fa-whatsapp"></i> FALAR NO WHATSAPP
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Como Funciona -->
+    <section class="how-it-works section-padding" id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>Como Funciona</h2>
+                <p>O processo é simples e você começa a economizar rapidamente</p>
+            </div>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Simule sua Economia</h3>
+                    <p>Use nossa calculadora para descobrir quanto você pode economizar na sua conta de luz.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Escolha sua Cota</h3>
+                    <p>Selecione a cota de energia que melhor atende ao seu consumo mensal.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Assine o Contrato</h3>
+                    <p>Faça parte da nossa associação com um contrato simples e transparente.</p>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Comece a Economizar</h3>
+                    <p>Aproveite a economia na sua próxima fatura de energia.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Depoimentos -->
+    <section class="testimonials section-padding" id="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>O que Nossos Associados Dizem</h2>
+                <p>Confira a experiência de quem já está economizando com energia solar compartilhada</p>
+            </div>
+            
+            <div class="testimonial-slider">
+                <div class="testimonial">
+                    <p class="testimonial-text">"Minha conta de luz caiu mais de 15% desde que entrei para a associação. O processo foi simples e não tive nenhum custo adicional. Recomendo para todos que querem economizar sem complicação!"</p>
+                    <p class="testimonial-author">Maria, Residencial</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq section-padding" id="faq">
+        <div class="container">
+            <div class="section-title">
+                <h2>Perguntas Frequentes</h2>
+                <p>Tire suas dúvidas sobre energia solar compartilhada</p>
+            </div>
+            
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Preciso instalar equipamentos na minha casa?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Não. A energia é gerada em usinas solares compartilhadas e os créditos são abatidos diretamente na sua conta da distribuidora. Você não precisa fazer nenhuma instalação ou modificação na sua propriedade.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Como é calculada a minha economia?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sua economia é calculada com base no valor da tarifa de geração distribuída, que é menor que a tarifa convencional, menos o valor da contribuição para a associação. A calculadora em nosso site faz esse cálculo automaticamente para você.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Posso cancelar a qualquer momento?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Sim, o contrato tem prazo determinado, mas você pode cancelar a qualquer momento conforme as condições estabelecidas no estatuto da associação. Não há multas por cancelamento antecipado.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Como funciona a migração entre cotas?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Você pode solicitar a alteração da sua cota conforme suas necessidades de consumo, seguindo as regras estabelecidas no estatuto da associação. A migração é simples e não gera custos adicionais.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Ibiapaba Solar</h3>
+                    <p>Energia limpa e econômica para todos. Participe da nossa associação e comece a economizar na sua conta de luz.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul>
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#benefits">Vantagens</a></li>
+                        <li><a href="#calculator">Calculadora</a></li>
+                        <li><a href="#how-it-works">Como Funciona</a></li>
+                        <li><a href="#testimonials">Depoimentos</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-phone"></i> (88) 99693-1116</li>
+                        <li><i class="fas fa-envelope"></i> assoc.ibiapabasolar@gmail.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Tianguá, Ceará</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Ibiapaba Solar. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+
+        // Menu mobile
+        document.querySelector('.mobile-menu').addEventListener('click', function() {
+            document.querySelector('nav').classList.toggle('active');
+        });
+        
+        // FAQ accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                answer.classList.toggle('active');
+                
+                const icon = question.querySelector('i');
+                if (answer.classList.contains('active')) {
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                } else {
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
+            });
+        });
+        
+        // Fechar menu ao clicar em um link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('nav').classList.remove('active');
+            });
+        });
+        
+        // Smooth scroll para links internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Cálculo da economia (simplificado para demonstração)
+        function calculateEconomy() {
+            const billAmount = parseFloat(document.getElementById('billAmount').value);
+            
+            if (!billAmount || billAmount < 100) {
+                alert('Por favor, digite um valor válido para sua fatura (mínimo R$ 100,00)');
+                return;
+            }
+            
+            // Cálculos simplificados para demonstração
+            const currentBill = billAmount;
+            const newEnelBill = billAmount * 0.85; // 15% de redução
+            const associationFee = 150; // Valor fixo para demonstração
+            const newTotal = newEnelBill + associationFee;
+            const monthlySavings = currentBill - newTotal;
+            const yearlySavings = monthlySavings * 12;
+            const reductionPercent = (monthlySavings / currentBill) * 100;
+            
+            // Atualizar interface
+            document.getElementById('currentBill').textContent = `R$ ${currentBill.toFixed(2)}`;
+            document.getElementById('newEnelBill').textContent = `R$ ${newEnelBill.toFixed(2)}`;
+            document.getElementById('associationFee').textContent = `R$ ${associationFee.toFixed(2)}`;
+            document.getElementById('newTotal').textContent = `R$ ${newTotal.toFixed(2)}`;
+            document.getElementById('monthlySavings').textContent = `R$ ${monthlySavings.toFixed(2)}`;
+            document.getElementById('yearlySavings').textContent = `R$ ${yearlySavings.toFixed(2)}`;
+            document.getElementById('reductionPercent').textContent = `${reductionPercent.toFixed(1)}%`;
+            
+            // Mensagem de economia
+            let message = '💰 QUERO ECONOMIZAR AGORA!';
+            if (reductionPercent > 15) message = '🎉 QUERO ESTA ECONOMIA EXCELENTE!';
+            if (reductionPercent > 20) message = '🚀 QUERO ESTA ECONOMIA EXTRAORDINÁRIA!';
+            if (monthlySavings < 0) message = '⚠️ PRECISO DE AJUDA ESPECIALIZADA';
+            
+            document.getElementById('economyMessage').textContent = message;
+            
+            // Mostrar resultados
+            document.getElementById('results').style.display = 'block';
+            
+            // Rolagem suave para os resultados
+            document.getElementById('results').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+        
+        function openWhatsApp() {
+            const billAmount = parseFloat(document.getElementById('billAmount').value);
+            
+            if (!billAmount || billAmount < 100) {
+                alert('Por favor, calcule sua economia primeiro!');
+                return;
+            }
+            
+            const phone = '5588996931116';
+            const message = `Olá! Gostaria de saber mais sobre a energia solar compartilhada da Ibiapaba Solar. Minha conta atual é de aproximadamente R$ ${billAmount.toFixed(2)}.`;
+            
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappURL = `https://wa.me/${phone}?text=${encodedMessage}`;
+            
+            window.open(whatsappURL, '_blank');
+        }
+        
+        // Calcular automaticamente ao pressionar Enter
+        document.getElementById('billAmount').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateEconomy();
+            }
+        });
+
+        // Inicializar header
+        window.dispatchEvent(new Event('scroll'));
+    </script>
+</body>
+</html>
