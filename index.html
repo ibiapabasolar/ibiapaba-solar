@@ -462,6 +462,91 @@
             font-weight: 700;
         }
 
+        /* Localização da Usina */
+        .location-section {
+            margin-top: 80px;
+            padding: 60px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+        }
+
+        .location-section .section-title h3 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .location-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .location-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .location-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-top: 5px;
+        }
+
+        .location-details h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .location-details p {
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+
+        .location-details strong {
+            color: var(--primary-dark);
+        }
+
+        .map-container {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .map-placeholder {
+            height: 250px;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary-dark);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .map-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .map-placeholder p {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .map-placeholder small {
+            color: var(--gray);
+        }
+
         /* Depoimentos */
         .testimonials {
             background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80');
@@ -657,6 +742,11 @@
             .steps {
                 flex-direction: column;
             }
+            
+            .location-info {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -705,6 +795,11 @@
             .section-title h2 {
                 font-size: 2rem;
             }
+            
+            .location-card {
+                flex-direction: column;
+                text-align: center;
+            }
         }
 
         @media (max-width: 576px) {
@@ -727,7 +822,7 @@
     <header id="header">
         <div class="container header-container">
             <div class="logo">
-                <img src="logo.png" alt="Ibiapaba Solar" onerror="this.style.display='none'">
+                <img src="logo.png" alt="Ibiapaba Solar">
             </div>
             
             <div class="mobile-menu">
@@ -913,6 +1008,37 @@
                     <p>Aproveite a economia na sua próxima fatura de energia.</p>
                 </div>
             </div>
+
+            <!-- Localização da Usina -->
+            <div class="location-section">
+                <div class="section-title">
+                    <h3>Nossa Usina</h3>
+                    <p>Conheça a localização da nossa usina de geração de energia solar</p>
+                </div>
+                
+                <div class="location-info">
+                    <div class="location-card">
+                        <div class="location-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="location-details">
+                            <h4>Usina Ibiapaba Solar</h4>
+                            <p><strong>Endereço:</strong> Sítio Bela Vista, N° S/N, Sala 1</p>
+                            <p><strong>Bairro:</strong> Zona Rural</p>
+                            <p><strong>Cidade:</strong> Tianguá - CE</p>
+                            <p><strong>CEP:</strong> 62.336-000</p>
+                        </div>
+                    </div>
+                    
+                    <div class="map-container">
+                        <div class="map-placeholder">
+                            <i class="fas fa-map"></i>
+                            <p>Localização da Usina Ibiapaba Solar</p>
+                            <small>Sítio Bela Vista, Tianguá - CE</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -995,6 +1121,7 @@
                     <div class="social-icons">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
                         <a href="#"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
@@ -1017,6 +1144,7 @@
                         <li><i class="fas fa-phone"></i> (88) 99693-1116</li>
                         <li><i class="fas fa-envelope"></i> assoc.ibiapabasolar@gmail.com</li>
                         <li><i class="fas fa-map-marker-alt"></i> Tianguá, Ceará</li>
+                        <li><i class="fas fa-solar-panel"></i> Usina: Sítio Bela Vista, Tianguá-CE</li>
                     </ul>
                 </div>
             </div>
