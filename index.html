@@ -323,6 +323,22 @@
             box-shadow: 0 0 0 3px rgba(0, 168, 89, 0.1);
         }
 
+        .min-value-warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #856404;
+            display: none;
+        }
+
+        .min-value-warning i {
+            color: #ffc107;
+            margin-right: 8px;
+        }
+
         .calculate-btn {
             width: 100%;
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -343,6 +359,13 @@
         .calculate-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(0, 168, 89, 0.4);
+        }
+
+        .calculate-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         .results {
@@ -375,6 +398,10 @@
             color: var(--primary);
         }
 
+        .negative-value {
+            color: #dc3545 !important;
+        }
+
         .economy-highlight {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: var(--white);
@@ -391,6 +418,16 @@
         .economy-highlight:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(0, 168, 89, 0.4);
+        }
+
+        .no-economy {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            cursor: not-allowed;
+        }
+
+        .no-economy:hover {
+            transform: none;
+            box-shadow: none;
         }
 
         .whatsapp-btn {
@@ -903,6 +940,10 @@
                 <div class="input-group">
                     <label for="billAmount">Valor médio da sua fatura (R$):</label>
                     <input type="number" id="billAmount" placeholder="Ex: 350,00" min="100" step="0.01">
+                    <div class="min-value-warning" id="minValueWarning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Para ter economia real, recomendamos uma fatura mínima de R$ 200,00</span>
+                    </div>
                 </div>
                 
                 <div class="input-group">
@@ -923,7 +964,7 @@
                     </select>
                 </div>
                 
-                <button class="calculate-btn" onclick="calculateEconomy()">
+                <button class="calculate-btn" id="calculateBtn" onclick="calculateEconomy()">
                     CALCULAR MINHA ECONOMIA
                 </button>
                 
@@ -1212,8 +1253,29 @@
                 }
             });
         });
+
+        // Validação do valor mínimo
+        const billAmountInput = document.getElementById('billAmount');
+        const minValueWarning = document.getElementById('minValueWarning');
+        const calculateBtn = document.getElementById('calculateBtn');
+
+        billAmountInput.addEventListener('input', function() {
+            const value = parseFloat(this.value) || 0;
+            
+            if (value > 0 && value < 200) {
+                minValueWarning.style.display = 'block';
+                calculateBtn.disabled = false;
+            } else {
+                minValueWarning.style.display = 'none';
+                calculateBtn.disabled = false;
+            }
+            
+            if (value < 100) {
+                calculateBtn.disabled = true;
+            }
+        });
         
-        // Cálculo da economia (simplificado para demonstração)
+        // Cálculo da economia REALISTA
         function calculateEconomy() {
             const billAmount = parseFloat(document.getElementById('billAmount').value);
             
@@ -1222,34 +1284,116 @@
                 return;
             }
             
-            // Cálculos simplificados para demonstração
-            const currentBill = billAmount;
-            const newEnelBill = billAmount * 0.85; // 15% de redução
-            const associationFee = 150; // Valor fixo para demonstração
-            const newTotal = newEnelBill + associationFee;
-            const monthlySavings = currentBill - newTotal;
-            const yearlySavings = monthlySavings * 12;
-            const reductionPercent = (monthlySavings / currentBill) * 100;
+            // CÁLCULOS REALISTAS BASEADOS NO MODELO DE NEGÓCIO
+            const MIN_VALUE_FOR_ECONOMY = 200; // Valor mínimo para ter economia real
+            
+            // Tarifas reais (valores aproximados)
+            const TARIFA_CONVENCIONAL = 0.95; // R$/kWh - tarifa convencional
+            const TARIFA_GD = 0.75; // R$/kWh - tarifa de geração distribuída
+            const CIP = 140.06; // Custos de disponibilidade
+            
+            // Estimar consumo baseado no valor da fatura
+            const consumoEstimado = Math.max(100, (billAmount - CIP) / TARIFA_CONVENCIONAL);
+            
+            // Definir cotas baseadas no consumo
+            let valorContribuicao = 0;
+            let creditosGerados = 0;
+            
+            if (consumoEstimado <= 300) {
+                // Cota Básica
+                valorContribuicao = 185;
+                creditosGerados = 250;
+            } else if (consumoEstimado <= 500) {
+                // Cota Plus
+                valorContribuicao = 295;
+                creditosGerados = 450;
+            } else if (consumoEstimado <= 1000) {
+                // Cota Comercial
+                valorContribuicao = 585;
+                creditosGerados = 900;
+            } else {
+                // Múltiplas cotas para consumo maior
+                const cotasComerciais = Math.floor(consumoEstimado / 1000);
+                const resto = consumoEstimado % 1000;
+                
+                valorContribuicao = cotasComerciais * 585;
+                creditosGerados = cotasComerciais * 900;
+                
+                if (resto > 0) {
+                    if (resto <= 300) {
+                        valorContribuicao += 185;
+                        creditosGerados += 250;
+                    } else {
+                        valorContribuicao += 295;
+                        creditosGerados += 450;
+                    }
+                }
+            }
+            
+            // Calcular nova conta
+            const valorCreditos = Math.min(creditosGerados, consumoEstimado) * TARIFA_GD;
+            const novaContaEnel = ((consumoEstimado * TARIFA_CONVENCIONAL) - valorCreditos) + CIP;
+            
+            // Calcular totais
+            const totalComAssociacao = novaContaEnel + valorContribuicao;
+            const economiaMensal = billAmount - totalComAssociacao;
+            const economiaAnual = economiaMensal * 12;
+            const percentualReducao = (economiaMensal / billAmount) * 100;
             
             // Atualizar interface
-            document.getElementById('currentBill').textContent = `R$ ${currentBill.toFixed(2)}`;
-            document.getElementById('newEnelBill').textContent = `R$ ${newEnelBill.toFixed(2)}`;
-            document.getElementById('associationFee').textContent = `R$ ${associationFee.toFixed(2)}`;
-            document.getElementById('newTotal').textContent = `R$ ${newTotal.toFixed(2)}`;
-            document.getElementById('monthlySavings').textContent = `R$ ${monthlySavings.toFixed(2)}`;
-            document.getElementById('yearlySavings').textContent = `R$ ${yearlySavings.toFixed(2)}`;
-            document.getElementById('reductionPercent').textContent = `${reductionPercent.toFixed(1)}%`;
+            document.getElementById('currentBill').textContent = `R$ ${billAmount.toFixed(2)}`;
+            document.getElementById('newEnelBill').textContent = `R$ ${novaContaEnel.toFixed(2)}`;
+            document.getElementById('associationFee').textContent = `R$ ${valorContribuicao.toFixed(2)}`;
+            document.getElementById('newTotal').textContent = `R$ ${totalComAssociacao.toFixed(2)}`;
+            document.getElementById('monthlySavings').textContent = `R$ ${economiaMensal.toFixed(2)}`;
+            document.getElementById('yearlySavings').textContent = `R$ ${economiaAnual.toFixed(2)}`;
+            document.getElementById('reductionPercent').textContent = `${percentualReducao.toFixed(1)}%`;
             
-            // Mensagem de economia
+            // Destacar valores negativos
+            const monthlySavingsElement = document.getElementById('monthlySavings');
+            const yearlySavingsElement = document.getElementById('yearlySavings');
+            const reductionPercentElement = document.getElementById('reductionPercent');
+            
+            if (economiaMensal < 0) {
+                monthlySavingsElement.classList.add('negative-value');
+                yearlySavingsElement.classList.add('negative-value');
+                reductionPercentElement.classList.add('negative-value');
+            } else {
+                monthlySavingsElement.classList.remove('negative-value');
+                yearlySavingsElement.classList.remove('negative-value');
+                reductionPercentElement.classList.remove('negative-value');
+            }
+            
+            // Mensagem de economia personalizada
+            const economyMessage = document.getElementById('economyMessage');
             let message = '💰 QUERO ECONOMIZAR AGORA!';
-            if (reductionPercent > 15) message = '🎉 QUERO ESTA ECONOMIA EXCELENTE!';
-            if (reductionPercent > 20) message = '🚀 QUERO ESTA ECONOMIA EXTRAORDINÁRIA!';
-            if (monthlySavings < 0) message = '⚠️ PRECISO DE AJUDA ESPECIALIZADA';
             
-            document.getElementById('economyMessage').textContent = message;
+            if (economiaMensal < 0) {
+                message = '⚠️ CONSUMO BAIXO PARA ECONOMIA';
+                economyMessage.classList.add('no-economy');
+            } else if (percentualReducao > 15) {
+                message = '🎉 QUERO ESTA ECONOMIA EXCELENTE!';
+                economyMessage.classList.remove('no-economy');
+            } else if (percentualReducao > 10) {
+                message = '🚀 QUERO ESTA ECONOMIA!';
+                economyMessage.classList.remove('no-economy');
+            } else {
+                message = '💰 QUERO ECONOMIZAR AGORA!';
+                economyMessage.classList.remove('no-economy');
+            }
+            
+            economyMessage.textContent = message;
             
             // Mostrar resultados
             document.getElementById('results').style.display = 'block';
+            
+            // Salvar dados para WhatsApp
+            window.calculationData = {
+                billAmount: billAmount,
+                economiaMensal: economiaMensal,
+                economiaAnual: economiaAnual,
+                percentualReducao: percentualReducao
+            };
             
             // Rolagem suave para os resultados
             document.getElementById('results').scrollIntoView({ 
@@ -1259,15 +1403,23 @@
         }
         
         function openWhatsApp() {
-            const billAmount = parseFloat(document.getElementById('billAmount').value);
-            
-            if (!billAmount || billAmount < 100) {
-                alert('Por favor, calcule sua economia primeiro!');
+            if (!window.calculationData || window.calculationData.economiaMensal < 0) {
+                alert('Sua conta atual é muito baixa para ter economia significativa. Entre em contato para uma avaliação personalizada.');
                 return;
             }
             
             const phone = '5588996931116';
-            const message = `Olá! Gostaria de saber mais sobre a energia solar compartilhada da Ibiapaba Solar. Minha conta atual é de aproximadamente R$ ${billAmount.toFixed(2)}.`;
+            const message = `Olá! Acabei de simular minha economia na calculadora da Ibiapaba Solar:
+
+💡 *RESULTADO DA MINHA SIMULAÇÃO:*
+• Conta atual: R$ ${window.calculationData.billAmount.toFixed(2)}
+• Economia mensal: R$ ${window.calculationData.economiaMensal.toFixed(2)}
+• Economia anual: R$ ${window.calculationData.economiaAnual.toFixed(2)}
+• Redução: ${window.calculationData.percentualReducao.toFixed(1)}%
+
+💰 *Quero fechar esta economia!*
+
+Podemos conversar?`;
             
             const encodedMessage = encodeURIComponent(message);
             const whatsappURL = `https://wa.me/${phone}?text=${encodedMessage}`;
